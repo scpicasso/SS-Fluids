@@ -1,3 +1,4 @@
+package src;
 
 public class System{
 	static short A = 0x01;
@@ -9,15 +10,60 @@ public class System{
 	static short S = 0x40;
 	static short R = 0x80;
 
+	static short[] direction = {A,B,C,D,E,F}
+
+	static final double sqr = Maths.sqrt(3)/2
+
+	//  E   F     |   4   5
+    //   \ /      |    \ /
+    // D--O--A    |  3--O--0
+    //   / \      |    / \
+    //  C   B     |   2   1
+
+    double velocities[6][2] = 
+    {
+    	{1.0, 0.0},
+    	{0.5, sqr},
+    	{-0.5,sqr},
+    	{-1.0, 0.0},
+    	{-0.5, -sqr},
+    	{0.5, -sqr}
+    }
+
 	public short[] createSystem() {
 		short[] collision_system = new short[256];
-		
-		//mapping solids presence
-		for(int i=64; i<=127; i++) {
+		int i = 0;
+
+		//no change in configuration
+		for(; i<=63; i++) {
 			collision_system[i] = i;
 		}
-		for(int j=192; j<=255; j++) {
-			collision_system[j] = j;
+
+		//solid, bounce back
+		for(; i<=127; i++) {
+			short m = S;
+			for(short k: positions) {
+				if(i & k != 0) {
+					m = m | bounceBack(k);
+				}
+			}
+			collision_system[i] = m;
+		}
+
+		//no change in configuration
+		for(; i<=191; i++) {
+			collision_system[i] = i;
+		}
+
+		//solid, bounce back
+		for(int i=192; i<=255; i++) {
+			short m = S;
+			for(short k: positions) {
+				if(i & k != 0) {
+					m = m | bounceBack(k);
+				}
+			}
+			collision_system[i] = m;
 		}
 
 		collision_system[A+D] = B+E;
@@ -46,7 +92,7 @@ public class System{
 		return collision_system;
 	}
 
-	public bounceBack(short direction) {
+	public short bounceBack(short direction) {
 		switch(direction) {
 			case A: 
 				return D;
