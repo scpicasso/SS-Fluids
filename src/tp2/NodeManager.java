@@ -5,8 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import ss.Particle;
-
 public class NodeManager {
 //	List<Particle> particles = null;
 //	private int size;
@@ -24,15 +22,13 @@ public class NodeManager {
 		short[][] cells = new short[size][size];    
 		
         for (Particle p : particles){
-            int i = (int) p.getY();
-            int j = (int) p.getX();
-
+            int i = (int) Math.round(p.getY());
+            int j = (int) Math.round(p.getX());
+            
             short dir = p.getVelocity();
             cells[i][j] |=  dir;
-//            Set<Particle> currentCell = cells[i][j];
             p.setYIndex(i);
             p.setXIndex(j);
-//            currentCell.add(p);
         }
         
         return cells;

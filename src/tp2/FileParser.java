@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-import ss.Particle;
-
 import java.util.List;
 
 public class FileParser {
@@ -28,18 +26,20 @@ public class FileParser {
 	
     public List<Particle> getParticles(String filePath) throws FileNotFoundException {
         
+    	System.out.println(filePath);
     	FileInputStream fis = new FileInputStream(filePath);  
         Scanner sc = new Scanner(fis);
         particleCount = sc.nextInt();
 //        lengthSize = sc.nextInt();
+        System.out.println(particleCount);
         for (int i = 0; i < particleCount; i++) {
         	double x = sc.nextDouble();
         	double y = sc.nextDouble();
         	short velocity = (short) sc.nextInt();
-            Particle particle = particles.poll();
-            particle.setX(x);
-            particle.setY(y);
-
+//            Particle particle = particles.poll();
+//            particle.setX(x);
+//            particle.setY(y);
+            System.out.println(velocity);
             particles.add(new Particle(i, x, y, velocity));
         }    
         
