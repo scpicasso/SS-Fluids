@@ -9,7 +9,7 @@ public class Particle implements Comparable<Particle> {
     private double y;
     private double radius;
     private int property;
-    private int velocity;
+    private short velocity;
 
     private int xIndex;
     private int yIndex;
@@ -32,7 +32,7 @@ public class Particle implements Comparable<Particle> {
     }
     
     
-    Particle(int id, double x, double y, int property) {
+    Particle(int id, double x, double y, short velocity) {
         this.id = id;
         this.x = x;
         this.y = y;
@@ -62,7 +62,7 @@ public class Particle implements Comparable<Particle> {
         this.neighbours.add(neighbour);
     }
     
-    public double getVelocity() {
+    public short getVelocity() {
         return velocity;
     }
     

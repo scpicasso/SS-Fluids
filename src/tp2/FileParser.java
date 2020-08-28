@@ -28,8 +28,6 @@ public class FileParser {
 	
     public List<Particle> getParticles(String filePath) throws FileNotFoundException {
         
-
-    	// parse static file
     	FileInputStream fis = new FileInputStream(filePath);  
         Scanner sc = new Scanner(fis);
         particleCount = sc.nextInt();
@@ -37,7 +35,7 @@ public class FileParser {
         for (int i = 0; i < particleCount; i++) {
         	double x = sc.nextDouble();
         	double y = sc.nextDouble();
-        	int velocity = sc.nextInt();
+        	short velocity = (short) sc.nextInt();
             Particle particle = particles.poll();
             particle.setX(x);
             particle.setY(y);

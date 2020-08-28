@@ -17,15 +17,21 @@ public class Main{
 	public static void main(String[] args) throws IOException {
 		List<Particle> particles = null;
 		FileParser fp = new FileParser();
+
 		double start;
 		double end;	
+		short[][] nodes;
 		
-	    try {
+
+		try {
 	    	particles = fp.getParticles(input_file);            
 		} catch (FileNotFoundException e) {
 //			System.out.println("File not found.");
 		}
 		
+		
+		nodes = NodeManager.assignNodes(size, particles);
+	    
 		
 	}
 }
