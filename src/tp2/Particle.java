@@ -1,24 +1,69 @@
-package src;
+package tp2;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class Particle implements Comparable<Particle> {
 	
     private double x;
     private double y;
-    private short direction;
-    private double vx;
-    private double vy;
+    private double radius;
     private int property;
+    private int velocity;
 
+    private int xIndex;
+    private int yIndex;
 	private int id;
+	private Set<Particle> neighbours;
 
-    public Particle(int id, double x, double y, double vx, double vy, short direction, int property) {
+    public Particle(int id, double x, double y, double radius, int property) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.property = property;
+        this.neighbours = new HashSet<Particle>();
+    }
+    
+    Particle(int id, double radius, int property) {
+        this.id = id;
+        this.radius = radius;
+        this.property = property;
+        this.neighbours = new HashSet<Particle>();
+    }
+    
+    
+    Particle(int id, double x, double y, int property) {
         this.id = id;
         this.x = x;
         this.y = y;
-        this.vx = vx;
-        this.vy = vy;
-        this.direction = direction;
-        this.property = property;
+        this.velocity = velocity;
+//        this.neighbours = new HashSet<Particle>();
+    }
+    
+    public  double getDistanceTo(Particle p) {
+        return Math.sqrt(Math.pow(x - p.getX(), 2) +
+                Math.pow(y - p.getY(), 2)) - this.radius - p.getRadius();
+    }
+    
+    public double getPeriodicDistanceTo(Particle p, int L) {
+
+        double deltaX = Math.abs(this.x - p.x);
+        if (deltaX > L / 2)
+        	deltaX = L - deltaX;
+
+        double deltaY = Math.abs(this.y - p.y);
+        if (deltaY > L / 2)
+        	deltaY = L - deltaY;
+
+        return Math.sqrt(Math.pow(deltaX,2) + Math.pow(deltaY,2));
+    }
+    
+    public void addNeighbour(Particle neighbour) {
+        this.neighbours.add(neighbour);
+    }
+    
+    public double getVelocity() {
+        return velocity;
     }
     
     public double getRadius() {
@@ -63,6 +108,10 @@ public class Particle implements Comparable<Particle> {
 
 	public int getId() {
 		return this.id;
+	}
+	
+	public Set<Particle> getNeighbours() {
+		return this.neighbours;
 	}
 	
     @Override

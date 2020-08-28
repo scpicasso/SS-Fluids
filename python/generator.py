@@ -8,7 +8,7 @@ def generate_file(name, num_particles, length):
   dynamic_file = open(name, 'w')
   dynamic_file.write(str(num_particles) + '\n' + '\n')
   for i in range(0, num_particles):
-    dynamic_file.write(str(random.uniform(0, length/2)) + '  ' 
+    dynamic_file.write(str(random.uniform(0, length)) + '  ' 
       + str(random.uniform(0, length)) + '  ' + velocity[random.randint(0,5)] + '\n')
   return
 

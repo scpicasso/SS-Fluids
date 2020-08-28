@@ -1,4 +1,4 @@
-package src;
+package tp2;
 
 public class System{
 	static short A = 0x01;
@@ -10,9 +10,9 @@ public class System{
 	static short S = 0x40;
 	static short R = 0x80;
 
-	static short[] direction = {A,B,C,D,E,F}
+	static short[] direction = {A,B,C,D,E,F};
 
-	static final double sqr = Maths.sqrt(3)/2
+	static final double sqr = Math.sqrt(3)/2;
 
 	//  E   F     |   4   5
     //   \ /      |    \ /
@@ -20,7 +20,7 @@ public class System{
     //   / \      |    / \
     //  C   B     |   2   1
 
-    double velocities[6][2] = 
+    double velocities[][] = 
     {
     	{1.0, 0.0},
     	{0.5, sqr},
@@ -28,19 +28,19 @@ public class System{
     	{-1.0, 0.0},
     	{-0.5, -sqr},
     	{0.5, -sqr}
-    }
+    };
 
 	public short[] createSystem() {
 		short[] collision_system = new short[256];
-		int i = 0;
+		
 
 		//no change in configuration
-		for(; i<=63; i++) {
-			collision_system[i] = i;
+		for(int i = 0; i < 64; i++) {
+			collision_system[i] = (short) i;
 		}
 
 		//solid, bounce back
-		for(; i<=127; i++) {
+		for(int i = 0; i < 128; i++) {
 			short m = S;
 			for(short k: positions) {
 				if(i & k != 0) {
@@ -51,12 +51,12 @@ public class System{
 		}
 
 		//no change in configuration
-		for(; i<=191; i++) {
-			collision_system[i] = i;
+		for(int i = 0; i < 192; i++) {
+			collision_system[i] = (short) i;
 		}
 
 		//solid, bounce back
-		for(int i=192; i<=255; i++) {
+		for(int i = 192; i < 256; i++) {
 			short m = S;
 			for(short k: positions) {
 				if(i & k != 0) {
@@ -66,17 +66,17 @@ public class System{
 			collision_system[i] = m;
 		}
 
-		collision_system[A+D] = B+E;
-		collision_system[A+D+R] = C+F+R;
-		collision_system[B+E] = A+D;
-		collision_system[B+E+R] = C+F+R;
-		collision_system[C+F] = B+E;
-		collision_system[C+F+R] = A+D+R;
+		collision_system[A+D] = (short) (B+E);
+		collision_system[A+D+R] = (short) (C+F+R);
+		collision_system[B+E] = (short) (A+D);
+		collision_system[B+E+R] = (short) (C+F+R);
+		collision_system[C+F] = (short) (B+E);
+		collision_system[C+F+R] = (short) (A+D+R);
 
-		collision_system[A+C+E] = B+D+F;
-		collision_system[A+C+E+R] = B+D+F+R;
-		collision_system[B+D+F] = A+C+E;
-		collision_system[B+D+F+R] = A+C+E+R;
+		collision_system[A+C+E] = (short) (B+D+F);
+		collision_system[A+C+E+R] = (short) (B+D+F+R);
+		collision_system[B+D+F] = (short) (A+C+E);
+		collision_system[B+D+F+R] = (short) (A+C+E+R);
 
 		collision_system[A+B+D+E] = B+C+E+F;
 		collision_system[A+B+D+E+R] = A+C+D+F+R;
