@@ -32,7 +32,7 @@ public class Main {
 			System.out.println("File not found.");
 		}
 				
-		nodes = NodeManager.assignNodes(size, particles);
+		nodes = NodeManager.assignNodes(size, particles, 50);
 		writeParticlesToFile(particles, nodes, fp.getN(), size);
 //	    LatticeGasSimulator.computeFHP(nodes, size);
 		
@@ -45,7 +45,9 @@ public class Main {
 			
 	        for (int i = 0; i < size ; i++) {
 	            for (int j = 0; j < size ; j++) {
-	            	writer.write(String.valueOf(j) + " " + String.valueOf(i) + " " + String.valueOf(nodes[i][j]) + "\n");
+	            	if (nodes[i][j] != 0) {
+	            		writer.write(String.valueOf(j) + " " + String.valueOf(i) + " " + String.valueOf(nodes[i][j]) + "\n");
+	            	}
 	            }
 	        } 		    		
 		}
