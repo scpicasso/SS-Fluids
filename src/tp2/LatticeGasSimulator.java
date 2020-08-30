@@ -85,15 +85,15 @@ public class LatticeGasSimulator {
             	
             	Short delta = collision_system[currentNodes[i][j]];
             	
-            	// S
-            	futureNodes[i][j] |= (delta & S);
-            	// R
-            	futureNodes[i][j] |= (delta & R);
-            	
             	// Nothing to check
             	if (delta == 0) {
             		continue;
             	}
+            	            	
+            	// S
+            	futureNodes[i][j] |= (delta & S);
+            	// R
+            	futureNodes[i][j] |= (delta & R);
             	
             	if (j < size - 1) {
                 	// A

@@ -45,13 +45,13 @@ public class Main {
 	public static void writeParticlesToFile(List<Particle> particles, short[][] nodes, int n, int size) throws UnsupportedEncodingException, FileNotFoundException, IOException {
 		
 		try (Writer writer = new BufferedWriter(new OutputStreamWriter( new FileOutputStream("output_t" + step + ".txt"), "utf-8"))) {
-			writer.write(String.valueOf(n) + "\n" + "\n");
+			writer.write(String.valueOf(nodes.length * nodes[0].length) + "\n" + "\n");
 			
 	        for (int i = 0; i < size ; i++) {
 	            for (int j = 0; j < size ; j++) {
-	            	if (nodes[i][j] != 0) {
+//	            	if (nodes[i][j] != 0) {
 	            		writer.write(String.valueOf(j) + " " + String.valueOf(i) + " " + String.valueOf(nodes[i][j]) + "\n");
-	            	}
+//	            	}
 	            }
 	        } 		    		
 		}
