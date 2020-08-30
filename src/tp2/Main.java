@@ -32,9 +32,13 @@ public class Main {
 			System.out.println("File not found.");
 		}
 				
+		LatticeGasSimulator fluidSimulator = new LatticeGasSimulator();
 		nodes = NodeManager.assignNodes(size, particles, 50);
-		writeParticlesToFile(particles, nodes, fp.getN(), size);
-//	    LatticeGasSimulator.computeFHP(nodes, size);
+		
+		for (int i = 0; i < 1000; i++) {
+			writeParticlesToFile(particles, nodes, fp.getN(), size);
+		    nodes = fluidSimulator.getFutureNodes(nodes, size);	
+		}
 		
 	}
 	
