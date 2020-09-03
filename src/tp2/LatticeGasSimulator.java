@@ -1,6 +1,11 @@
 package tp2;
 
+import java.io.IOException;
+import java.io.Writer;
+
 public class LatticeGasSimulator {
+	
+	static long t = 0;
 	
 	static final short A = 0x01;
 	static final short B = 0x02;
@@ -12,15 +17,15 @@ public class LatticeGasSimulator {
 	static final short R = 0x80;
 
 	static short[] direction = {A, B, C, D, E, F};
-	short[] collision_system;
+	short[] collisionTable;
 	
 	public LatticeGasSimulator() {
-		collision_system = new short[256];
+		collisionTable = new short[256];
 		
 
 		//no change in configuration
 		for(int i = 0; i < 64; i++) {
-			collision_system[i] = (short) i;
+			collisionTable[i] = (short) i;
 		}
 
 		//solid, bounce back
@@ -32,12 +37,12 @@ public class LatticeGasSimulator {
 					m = (short) (m | bounce);
 				}
 			}
-			collision_system[i] = m;
+			collisionTable[i] = m;
 		}
 
 		//no change in configuration
 		for(int i = 128; i < 192; i++) {
-			collision_system[i] = (short) i;
+			collisionTable[i] = (short) i;
 		}
 
 		//solid, bounce back
@@ -49,45 +54,52 @@ public class LatticeGasSimulator {
 					m = (short) (m | bounce);
 				}
 			}
-			collision_system[i] = m;
+			collisionTable[i] = m;
 		}
 
-		collision_system[A+D] = (short) (B+E);
-		collision_system[A+D+R] = (short) (C+F+R);
-		collision_system[B+E] = (short) (A+D);
-		collision_system[B+E+R] = (short) (C+F+R);
-		collision_system[C+F] = (short) (B+E);
-		collision_system[C+F+R] = (short) (A+D+R);
+		collisionTable[A+D] = (short) (B+E);
+		collisionTable[A+D+R] = (short) (C+F+R);
+		collisionTable[B+E] = (short) (A+D);
+		collisionTable[B+E+R] = (short) (C+F+R);
+		collisionTable[C+F] = (short) (B+E);
+		collisionTable[C+F+R] = (short) (A+D+R);
 
-		collision_system[A+C+E] = (short) (B+D+F);
-		collision_system[A+C+E+R] = (short) (B+D+F+R);
-		collision_system[B+D+F] = (short) (A+C+E);
-		collision_system[B+D+F+R] = (short) (A+C+E+R);
+		collisionTable[A+C+E] = (short) (B+D+F);
+		collisionTable[A+C+E+R] = (short) (B+D+F+R);
+		collisionTable[B+D+F] = (short) (A+C+E);
+		collisionTable[B+D+F+R] = (short) (A+C+E+R);
 
-		collision_system[A+B+D+E] = (short) (B+C+E+F);
-		collision_system[A+B+D+E+R] = (short) (A+C+D+F+R);
-		collision_system[A+C+D+F] = (short) (A+B+D+E);
-		collision_system[A+C+D+F+R] = (short) (B+C+E+F+R);
-		collision_system[B+C+E+F] = (short) (A+B+D+E);
-		collision_system[B+C+E+F+R] = (short) (A+C+D+F+R);
+		collisionTable[A+B+D+E] = (short) (B+C+E+F);
+		collisionTable[A+B+D+E+R] = (short) (A+C+D+F+R);
+		collisionTable[A+C+D+F] = (short) (A+B+D+E);
+		collisionTable[A+C+D+F+R] = (short) (B+C+E+F+R);
+		collisionTable[B+C+E+F] = (short) (A+B+D+E);
+		collisionTable[B+C+E+F+R] = (short) (A+C+D+F+R);
 		
-		collision_system[A+C+E+R] = (short) (B+D+F+R);
-		collision_system[B+D+F] = (short) (A+C+E);
-		collision_system[B+D+F+R] = (short) (A+C+E+R);			
+		collisionTable[A+C+E+R] = (short) (B+D+F+R);
+		collisionTable[B+D+F] = (short) (A+C+E);
+		collisionTable[B+D+F+R] = (short) (A+C+E+R);			
 	}	
 	
-	public short[][] getFutureNodes(short[][] currentNodes, int size) {
+	public short[][] getFutureNodes(short[][] currentNodes, int size, Writer w) throws IOException {
+		int a = 0, b = 0;
 		
 		short[][] futureNodes = new short[size][size]; 
 		
         for (int i = 0; i < size ; i++) {
             for (int j = 0; j < size ; j++) {
-            	
-            	Short delta = collision_system[currentNodes[i][j]];
+                        	
+            	Short delta = collisionTable[currentNodes[i][j]];
             	
             	// Nothing to check
             	if (delta == 0) {
             		continue;
+            	}
+            	
+            	if (j >= size/2) {
+            		b++;        		
+            	} else {
+            		a++;
             	}
             	            	
             	// S
@@ -144,7 +156,12 @@ public class LatticeGasSimulator {
             	    
             }
         } 
-		
+        
+        w.write(String.valueOf(t++) +  ' ' + String.valueOf(Math.abs(a - b)) + "\n");
+
+//		System.out.println();
+//		System.out.println(Math.abs(a - b));
+//		System.out.println( );
         return futureNodes;
 	}
 	
