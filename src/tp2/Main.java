@@ -35,10 +35,13 @@ public class Main {
 		LatticeGasSimulator fluidSimulator = new LatticeGasSimulator();
 		nodes = NodeManager.assignNodes(size, particles, 50);
 		
-		for (int i = 0; i < 1000; i++) {
-			writeParticlesToFile(particles, nodes, fp.getN(), size);
-		    nodes = fluidSimulator.getFutureNodes(nodes, size);	
-		}
+
+		try (Writer writer = new BufferedWriter(new OutputStreamWriter( new FileOutputStream("fpTime.txt"), "utf-8"))) {
+			for (int i = 0; i < 1000; i++) {
+				writeParticlesToFile(particles, nodes, fp.getN(), size);
+			    nodes = fluidSimulator.getFutureNodes(nodes, size, writer);		        
+			}
+		} 	
 		
 	}
 	
@@ -49,9 +52,11 @@ public class Main {
 			
 	        for (int i = 0; i < size ; i++) {
 	            for (int j = 0; j < size ; j++) {
-//	            	if (nodes[i][j] != 0) {
-	            		writer.write(String.valueOf(j) + " " + String.valueOf(i) + " " + String.valueOf(nodes[i][j]) + "\n");
-//	            	}
+	            		int dirCount = (nodes[i][j] & 0x01) == 0x01 ? 1:0 + (nodes[i][j] & 0x02) == 0x02 ? 1:0;
+	            		dirCount +=	(nodes[i][j] & 0x04) == 0x04 ? 1:0 + (nodes[i][j] & 0x08) == 0x08 ? 1:0; 
+	            		dirCount += (nodes[i][j] & 0x10) == 0x10 ? 1:0 + (nodes[i][j] & 0x20) == 0x20 ? 1:0;
+
+	            		writer.write(String.valueOf(j) + " " + String.valueOf(i) + " " + String.valueOf(nodes[i][j]) + " " + String.valueOf(dirCount) + "\n");
 	            }
 	        } 		    		
 		}
