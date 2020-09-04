@@ -81,8 +81,7 @@ public class LatticeGasSimulator {
 		collisionTable[B+D+F+R] = (short) (A+C+E+R);			
 	}	
 	
-	public short[][] getFutureNodes(short[][] currentNodes, int size, Writer w) throws IOException {
-		int a = 0, b = 0;
+	public short[][] getFutureNodes(short[][] currentNodes, int size) {
 		
 		short[][] futureNodes = new short[size][size]; 
 		
@@ -95,13 +94,7 @@ public class LatticeGasSimulator {
             	if (delta == 0) {
             		continue;
             	}
-            	
-            	if (j >= size/2) {
-            		b++;        		
-            	} else {
-            		a++;
-            	}
-            	            	
+                        	            	
             	// S
             	futureNodes[i][j] |= (delta & S);
             	// R
@@ -156,12 +149,7 @@ public class LatticeGasSimulator {
             	    
             }
         } 
-        
-        w.write(String.valueOf(t++) +  ' ' + String.valueOf(Math.abs(a - b)) + "\n");
 
-//		System.out.println();
-//		System.out.println(Math.abs(a - b));
-//		System.out.println( );
         return futureNodes;
 	}
 	
